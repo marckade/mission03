@@ -1,10 +1,11 @@
 package edu.isu.cs.cs3308.structures.impl;
 
+import com.sun.org.apache.bcel.internal.generic.I2F;
 import edu.isu.cs.cs3308.structures.Queue;
 
 import edu.isu.cs.cs3308.structures.Node;
 
-public class LinkedQueue<E> implements Queue {
+public class LinkedQueue<E> implements Queue<E> {
 
 
     private DoublyLinkedList<E> linkedQueue= new DoublyLinkedList<>();
@@ -34,8 +35,13 @@ public class LinkedQueue<E> implements Queue {
      * @param element Element to be inserted.
      */
     @Override
-    public void offer(Object element) {
+    public void offer(E element) {
 
+        // Checks if the element is null, if its not, add to bottom of list.
+        if(element != null)
+        {
+            linkedQueue.addLast(element);
+        }
     }
 
     /**
@@ -43,8 +49,19 @@ public class LinkedQueue<E> implements Queue {
      * null if empty.
      */
     @Override
-    public Object peek() {
-        return null;
+    public E peek() {
+
+        // Check size of the linked que first.
+        if(linkedQueue.size() > 0)
+        {
+            return linkedQueue.first();
+        }
+        else
+        {
+            return null;
+        }
+
+
     }
 
     /**
@@ -52,8 +69,17 @@ public class LinkedQueue<E> implements Queue {
      * null if empty.
      */
     @Override
-    public Object poll() {
-        return null;
+    public E poll() {
+
+        // Check is the size is less than 1 or empty
+        if(linkedQueue.size() < 1)
+        {
+            return null;
+        }
+        else
+        {
+            return linkedQueue.removeFirst();
+        }
     }
 
     /**
@@ -62,6 +88,9 @@ public class LinkedQueue<E> implements Queue {
      */
     @Override
     public void printQueue() {
+
+        // Call printlist from doubly linked list class.
+        linkedQueue.printList();
 
     }
 
@@ -76,7 +105,35 @@ public class LinkedQueue<E> implements Queue {
      * is null.
      */
     @Override
-    public void transfer(Queue into) {
+    public void transfer(Queue<E> into) {
+
+        if(this.size() < 1 || into == null)
+        {
+
+        }
+        else
+        {
+            //Create a new linkedStack that will be a temp base for reversing.
+            LinkedStack<E> tempStack = new LinkedStack<>();
+
+            while(this.size() > 0)
+            {
+                E pushed = this.poll();
+
+                tempStack.push(pushed);
+            }
+
+            while(tempStack.size() > 0)
+            {
+                into.offer(tempStack.pop());
+            }
+
+        }
+
+
+
+
+
 
     }
 
@@ -85,6 +142,25 @@ public class LinkedQueue<E> implements Queue {
      */
     @Override
     public void reverse() {
+
+        if(this.size() > 9)
+        {
+            //Create a new linkedStack that will be a temp base for reversing.
+            LinkedStack<E> tempStack = new LinkedStack<>();
+
+            while(this.size() > 0)
+            {
+                E pushed = this.poll();
+
+                tempStack.push(pushed);
+            }
+
+            while(tempStack.size() > 0)
+            {
+                this.offer(tempStack.pop());
+            }
+
+        }
 
     }
 
@@ -99,7 +175,30 @@ public class LinkedQueue<E> implements Queue {
      * this queue.
      */
     @Override
-    public void merge(Queue from) {
+    public void merge(Queue<E> from) {
+
+        if(from == null)
+        {
+
+        }
+        else
+        {
+            if(from.size() > 0)
+            {
+                int storedSize = from.size();
+
+                E element;
+
+                for(int i = 0; i < storedSize; i++)
+                {
+                    element = from.poll();
+
+                    from.offer(element);
+                    this.offer(element);
+                }
+            }
+        }
+
 
     }
 }

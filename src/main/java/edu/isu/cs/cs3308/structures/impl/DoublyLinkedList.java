@@ -354,7 +354,7 @@ public class DoublyLinkedList<E> implements List<E> {
     @Override
     public boolean isEmpty() {
 
-        if(head == null)
+        if(size() < 1)
             return true;
         else
         {
